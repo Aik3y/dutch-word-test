@@ -1,4 +1,5 @@
-"1": [
+{
+  "1": [
   { "word": "appel", "options": ["appel", "amper", "stoel"] },
   { "word": "huis", "options": ["huis", "muur", "fiets"] },
   { "word": "stoel", "options": ["stoel", "bank", "vogel"] },
@@ -22,3 +23,4 @@
   { "word": "verantwoordelijkheid", "options": ["verantwoordelijkheid", "verplichting", "jas"] },
   { "word": "duurzaamheid", "options": ["duurzaamheid", "milieu", "taart"] }
 ]
+}
