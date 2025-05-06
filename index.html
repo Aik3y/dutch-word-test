@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Woordtrainer</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    button, input { margin: 10px 0; padding: 10px; font-size: 1rem; }
+    .choices button { display: block; margin: 5px 0; width: 100%; }
+    .correct { background-color: lightgreen; }
+    .incorrect { background-color: salmon; }
+  </style>
+</head>
+<body>
+  <h1>Woordtrainer</h1>
+  <p><button onclick="playWord()">🔊 Luister naar het woord</button></p>
+
+  <div id="multipleChoice">
+    <h2>Meerkeuzevraag</h2>
+    <div class="choices"></div>
+  </div>
+
+  <div id="inputExercise">
+    <h2>Zelf typen</h2>
+    <input type="text" id="typedAnswer" placeholder="Typ hier het woord" />
+    <button onclick="checkTypedAnswer()">Controleer</button>
+    <p id="feedback"></p>
+  </div>
+
+  <script>
+    const words = [
+      { word: "appel", options: ["appel", "peer", "banaan"] },
+      { word: "huis", options: ["huis", "auto", "fiets"] },
+      { word: "stoel", options: ["tafel", "stoel", "lamp"] }
+    ];
+
+    let currentWord = {};
+
+    function loadNewWord() {
+      currentWord = words[Math.floor(Math.random() * words.length)];
+      document.getElementById("typedAnswer").value = "";
+      document.getElementById("feedback").innerText = "";
+
+      // Meerkeuze laden
+      const choicesDiv = document.querySelector(".choices");
+      choicesDiv.innerHTML = "";
+      currentWord.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkChoice(opt, btn);
+        choicesDiv.appendChild(btn);
+      });
+    }
+
+    function playWord() {
+      const utterance = new SpeechSynthesisUtterance(currentWord.word);
+      utterance.lang = 'nl-NL';
+      speechSynthesis.speak(utterance);
+    }
+
+    function checkChoice(selected, button) {
+      const correct = selected === currentWord.word;
+      button.classList.add(correct ? "correct" : "incorrect");
+      setTimeout(loadNewWord, 1500);
+    }
+
+    function checkTypedAnswer() {
+      const answer = document.getElementById("typedAnswer").value.trim().toLowerCase();
+      const correct = answer === currentWord.word.toLowerCase();
+      const feedback = document.getElementById("feedback");
+      feedback.innerText = correct ? "✅ Goed gedaan!" : `❌ Fout. Het juiste woord was: ${currentWord.word}`;
+      setTimeout(loadNewWord, 2000);
+    }
+
+    // Start met een woord
+    loadNewWord();
+  </script>
+</body>
+</html>
