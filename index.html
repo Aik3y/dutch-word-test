@@ -5,42 +5,141 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Woordtrainer</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-    button, input, select { margin: 10px 0; padding: 10px; font-size: 1rem; }
-    .choices button { display: block; margin: 5px 0; width: 100%; }
-    .correct { background-color: lightgreen; }
-    .incorrect { background-color: salmon; }
+    :root {
+      --primary: #4a90e2;
+      --secondary: #f5f7fa;
+      --correct: #d4edda;
+      --incorrect: #f8d7da;
+      --text: #333;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: var(--secondary);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 90%;
+      margin-top: 40px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: var(--primary);
+      font-size: 1.8rem;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: 600;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #3b7dc4;
+    }
+
+    .choices {
+      margin-top: 15px;
+    }
+
+    .choices button {
+      width: 100%;
+      margin-top: 8px;
+      background-color: #e9ecef;
+      color: #333;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+
+    .choices button:hover {
+      background-color: #dfe6ed;
+    }
+
+    .correct {
+      background-color: var(--correct) !important;
+    }
+
+    .incorrect {
+      background-color: var(--incorrect) !important;
+    }
+
+    #feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 15px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Woordtrainer</h1>
+  <div class="container">
+    <h1>Woordtrainer</h1>
 
-  <label for="levelSelect">Kies niveau:</label>
-  <select id="levelSelect" onchange="changeLevel()">
-    <option value="1">Niveau 1 (makkelijk)</option>
-    <option value="2">Niveau 2 (moeilijker)</option>
-  </select>
+    <label for="levelSelect">Kies niveau:</label>
+    <select id="levelSelect" onchange="changeLevel()">
+      <option value="1">Niveau 1 (makkelijk)</option>
+      <option value="2">Niveau 2 (moeilijker)</option>
+    </select>
 
-  <br/>
+    <label for="exerciseType">Kies oefening:</label>
+    <select id="exerciseType" onchange="changeExerciseType()">
+      <option value="multiple">Meerkeuze</option>
+      <option value="input">Zelf typen</option>
+    </select>
 
-  <label for="exerciseType">Kies oefening:</label>
-  <select id="exerciseType" onchange="changeExerciseType()">
-    <option value="multiple">Meerkeuze</option>
-    <option value="input">Zelf typen</option>
-  </select>
+    <button onclick="playWord()">🔊 Luister naar het woord</button>
 
-  <p><button onclick="playWord()">🔊 Luister naar het woord</button></p>
+    <div id="multipleChoice" style="display: none;">
+      <h2>Meerkeuzevraag</h2>
+      <div class="choices"></div>
+    </div>
 
-  <div id="multipleChoice" style="display: none;">
-    <h2>Meerkeuzevraag</h2>
-    <div class="choices"></div>
-  </div>
-
-  <div id="inputExercise" style="display: none;">
-    <h2>Zelf typen</h2>
-    <input type="text" id="typedAnswer" placeholder="Typ hier het woord" />
-    <button onclick="checkTypedAnswer()">Controleer</button>
-    <p id="feedback"></p>
+    <div id="inputExercise" style="display: none;">
+      <h2>Zelf typen</h2>
+      <input type="text" id="typedAnswer" placeholder="Typ hier het woord" />
+      <button onclick="checkTypedAnswer()">Controleer</button>
+      <p id="feedback"></p>
+    </div>
   </div>
 
   <script>
@@ -138,10 +237,10 @@
         });
     }
 
-    // Initialisatie
     if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = findDutchVoice;
     }
+
     loadWordsFromJson();
   </script>
 </body>
