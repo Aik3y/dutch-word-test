@@ -1,0 +1,26 @@
+{
+  "1": [
+    { "word": "appel", "options": ["appel", "anpel", "computer"] },
+    { "word": "huis", "options": ["huis", "huys", "tafel"] },
+    { "word": "stoel", "options": ["stoel", "stool", "regen"] },
+    { "word": "kat", "options": ["kat", "rat", "banaan"] },
+    { "word": "boek", "options": ["boek", "boeg", "schoen"] },
+    { "word": "fiets", "options": ["fiets", "viets", "telefoon"] },
+    { "word": "tafel", "options": ["tafel", "kafel", "muur"] },
+    { "word": "deur", "options": ["deur", "deurbel", "lucht"] },
+    { "word": "boom", "options": ["boom", "boon", "dokter"] },
+    { "word": "water", "options": ["water", "weter", "vlam"] }
+  ],
+  "2": [
+    { "word": "bibliotheek", "options": ["bibliotheek", "bibliofiel", "pizza"] },
+    { "word": "ambtenaar", "options": ["ambtenaar", "ambtgenoot", "strand"] },
+    { "word": "vergadering", "options": ["vergadering", "verzameling", "fiets"] },
+    { "word": "belasting", "options": ["belasting", "belegging", "zand"] },
+    { "word": "verzekering", "options": ["verzekering", "verzekeraar", "ijsje"] },
+    { "word": "overeenkomst", "options": ["overeenkomst", "overgang", "stoel"] },
+    { "word": "wetenschap", "options": ["wetenschap", "wetenschapster", "tafelkleed"] },
+    { "word": "minister", "options": ["minister", "ministrant", "appelmoes"] },
+    { "word": "verantwoordelijkheid", "options": ["verantwoordelijkheid", "verantwoording", "broek"] },
+    { "word": "duurzaamheid", "options": ["duurzaamheid", "duurzaam", "snoep"] }
+  ]
+}

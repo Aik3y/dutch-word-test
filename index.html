@@ -6,7 +6,7 @@
   <title>Woordtrainer</title>
   <style>
     body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-    button, input { margin: 10px 0; padding: 10px; font-size: 1rem; }
+    button, input, select { margin: 10px 0; padding: 10px; font-size: 1rem; }
     .choices button { display: block; margin: 5px 0; width: 100%; }
     .correct { background-color: lightgreen; }
     .incorrect { background-color: salmon; }
@@ -14,14 +14,29 @@
 </head>
 <body>
   <h1>Woordtrainer</h1>
+
+  <label for="levelSelect">Kies niveau:</label>
+  <select id="levelSelect" onchange="changeLevel()">
+    <option value="1">Niveau 1 (makkelijk)</option>
+    <option value="2">Niveau 2 (moeilijker)</option>
+  </select>
+
+  <br/>
+
+  <label for="exerciseType">Kies oefening:</label>
+  <select id="exerciseType" onchange="changeExerciseType()">
+    <option value="multiple">Meerkeuze</option>
+    <option value="input">Zelf typen</option>
+  </select>
+
   <p><button onclick="playWord()">🔊 Luister naar het woord</button></p>
 
-  <div id="multipleChoice">
+  <div id="multipleChoice" style="display: none;">
     <h2>Meerkeuzevraag</h2>
     <div class="choices"></div>
   </div>
 
-  <div id="inputExercise">
+  <div id="inputExercise" style="display: none;">
     <h2>Zelf typen</h2>
     <input type="text" id="typedAnswer" placeholder="Typ hier het woord" />
     <button onclick="checkTypedAnswer()">Controleer</button>
@@ -29,40 +44,64 @@
   </div>
 
   <script>
-    const words = [
-      { word: "appel", options: ["appel", "peer", "banaan"] },
-      { word: "huis", options: ["huis", "auto", "fiets"] },
-      { word: "stoel", options: ["tafel", "stoel", "lamp"] }
-    ];
-
+    let exerciseType = "multiple";
+    let level = "1";
+    let selectedVoice = null;
     let currentWord = {};
+    let words = [];
+    let allWords = {};
+
+    function changeExerciseType() {
+      exerciseType = document.getElementById("exerciseType").value;
+      setupExerciseType();
+      loadNewWord();
+    }
+
+    function changeLevel() {
+      level = document.getElementById("levelSelect").value;
+      words = allWords[level];
+      loadNewWord();
+    }
+
+    function setupExerciseType() {
+      document.getElementById("multipleChoice").style.display = exerciseType === "multiple" ? "block" : "none";
+      document.getElementById("inputExercise").style.display = exerciseType === "input" ? "block" : "none";
+    }
 
     function loadNewWord() {
+      if (!words || words.length === 0) return;
       currentWord = words[Math.floor(Math.random() * words.length)];
       document.getElementById("typedAnswer").value = "";
       document.getElementById("feedback").innerText = "";
 
-      // Meerkeuze laden
-      const choicesDiv = document.querySelector(".choices");
-      choicesDiv.innerHTML = "";
-      currentWord.options.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
-        btn.onclick = () => checkChoice(opt, btn);
-        choicesDiv.appendChild(btn);
-      });
+      if (exerciseType === "multiple") {
+        const choicesDiv = document.querySelector(".choices");
+        choicesDiv.innerHTML = "";
+        currentWord.options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.innerText = opt;
+          btn.onclick = () => checkChoice(opt, btn);
+          choicesDiv.appendChild(btn);
+        });
+      }
     }
 
     function playWord() {
       const utterance = new SpeechSynthesisUtterance(currentWord.word);
       utterance.lang = 'nl-NL';
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
       speechSynthesis.speak(utterance);
     }
 
     function checkChoice(selected, button) {
       const correct = selected === currentWord.word;
       button.classList.add(correct ? "correct" : "incorrect");
-      setTimeout(loadNewWord, 1500);
+      setTimeout(() => {
+        button.classList.remove("correct", "incorrect");
+        loadNewWord();
+      }, 1500);
     }
 
     function checkTypedAnswer() {
@@ -70,11 +109,40 @@
       const correct = answer === currentWord.word.toLowerCase();
       const feedback = document.getElementById("feedback");
       feedback.innerText = correct ? "✅ Goed gedaan!" : `❌ Fout. Het juiste woord was: ${currentWord.word}`;
-      setTimeout(loadNewWord, 2000);
+      setTimeout(() => {
+        feedback.innerText = "";
+        loadNewWord();
+      }, 2000);
     }
 
-    // Start met een woord
-    loadNewWord();
+    function findDutchVoice() {
+      const voices = speechSynthesis.getVoices();
+      selectedVoice = voices.find(v =>
+        v.lang.startsWith('nl') &&
+        (v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('xander') || v.name.toLowerCase().includes('claire'))
+      ) || voices.find(v => v.lang.startsWith('nl'));
+    }
+
+    function loadWordsFromJson() {
+      fetch('words.json')
+        .then(response => response.json())
+        .then(data => {
+          allWords = data;
+          words = allWords[level];
+          setupExerciseType();
+          loadNewWord();
+        })
+        .catch(err => {
+          alert("Kon woordenlijst niet laden.");
+          console.error(err);
+        });
+    }
+
+    // Initialisatie
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = findDutchVoice;
+    }
+    loadWordsFromJson();
   </script>
 </body>
 </html>
