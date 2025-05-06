@@ -56,6 +56,19 @@
       border: 1px solid #ccc;
     }
 
+    .radio-group {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0 20px;
+    }
+
+    .radio-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     button {
       background-color: var(--primary);
       color: white;
@@ -103,12 +116,6 @@
       margin-top: 10px;
       font-weight: bold;
     }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px 15px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -118,14 +125,14 @@
     <label for="levelSelect">Kies niveau:</label>
     <select id="levelSelect" onchange="changeLevel()">
       <option value="1">Niveau 1 (makkelijk)</option>
-      <option value="2">Niveau 2 (moeilijker)</option>
+      <option value="2">Niveau 2 (gemiddeld)</option>
+      <option value="3">Niveau 3 (moeilijk)</option>
     </select>
 
-    <label for="exerciseType">Kies oefening:</label>
-    <select id="exerciseType" onchange="changeExerciseType()">
-      <option value="multiple">Meerkeuze</option>
-      <option value="input">Zelf typen</option>
-    </select>
+    <div class="radio-group">
+      <label><input type="radio" name="exerciseType" value="multiple" checked onchange="changeExerciseType()"> Meerkeuze</label>
+      <label><input type="radio" name="exerciseType" value="input" onchange="changeExerciseType()"> Zelf typen</label>
+    </div>
 
     <button onclick="playWord()">🔊 Luister naar het woord</button>
 
@@ -148,10 +155,25 @@
     let selectedVoice = null;
     let currentWord = {};
     let words = [];
-    let allWords = {};
+
+    const allWords = {
+      "1": [
+        { word: "appel", options: ["appel", "amper", "stoel"] },
+        { word: "huis", options: ["huis", "muur", "fiets"] }
+      ],
+      "2": [
+        { word: "bibliotheek", options: ["bibliotheek", "boekhandel", "paraplu"] },
+        { word: "ambtenaar", options: ["ambtenaar", "minister", "strandstoel"] }
+      ],
+      "3": [
+        { word: "maatschappij", options: ["maatschappij", "samenleving", "winkel"] },
+        { word: "verantwoordelijkheid", options: ["verantwoordelijkheid", "aansprakelijkheid", "deur"] }
+      ]
+    };
 
     function changeExerciseType() {
-      exerciseType = document.getElementById("exerciseType").value;
+      const selected = document.querySelector('input[name="exerciseType"]:checked');
+      exerciseType = selected ? selected.value : "multiple";
       setupExerciseType();
       loadNewWord();
     }
@@ -188,9 +210,7 @@
     function playWord() {
       const utterance = new SpeechSynthesisUtterance(currentWord.word);
       utterance.lang = 'nl-NL';
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      }
+      if (selectedVoice) utterance.voice = selectedVoice;
       speechSynthesis.speak(utterance);
     }
 
@@ -222,26 +242,13 @@
       ) || voices.find(v => v.lang.startsWith('nl'));
     }
 
-    function loadWordsFromJson() {
-      fetch('words.json')
-        .then(response => response.json())
-        .then(data => {
-          allWords = data;
-          words = allWords[level];
-          setupExerciseType();
-          loadNewWord();
-        })
-        .catch(err => {
-          alert("Kon woordenlijst niet laden.");
-          console.error(err);
-        });
-    }
-
     if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = findDutchVoice;
     }
 
-    loadWordsFromJson();
+    words = allWords[level];
+    setupExerciseType();
+    loadNewWord();
   </script>
 </body>
 </html>
