@@ -1,26 +1,24 @@
-{
-  "1": [
-    { "word": "appel", "options": ["appel", "anpel", "computer"] },
-    { "word": "huis", "options": ["huis", "huys", "tafel"] },
-    { "word": "stoel", "options": ["stoel", "stool", "regen"] },
-    { "word": "kat", "options": ["kat", "rat", "banaan"] },
-    { "word": "boek", "options": ["boek", "boeg", "schoen"] },
-    { "word": "fiets", "options": ["fiets", "viets", "telefoon"] },
-    { "word": "tafel", "options": ["tafel", "kafel", "muur"] },
-    { "word": "deur", "options": ["deur", "deurbel", "lucht"] },
-    { "word": "boom", "options": ["boom", "boon", "dokter"] },
-    { "word": "water", "options": ["water", "weter", "vlam"] }
-  ],
-  "2": [
-    { "word": "bibliotheek", "options": ["bibliotheek", "bibliofiel", "pizza"] },
-    { "word": "ambtenaar", "options": ["ambtenaar", "ambtgenoot", "strand"] },
-    { "word": "vergadering", "options": ["vergadering", "verzameling", "fiets"] },
-    { "word": "belasting", "options": ["belasting", "belegging", "zand"] },
-    { "word": "verzekering", "options": ["verzekering", "verzekeraar", "ijsje"] },
-    { "word": "overeenkomst", "options": ["overeenkomst", "overgang", "stoel"] },
-    { "word": "wetenschap", "options": ["wetenschap", "wetenschapster", "tafelkleed"] },
-    { "word": "minister", "options": ["minister", "ministrant", "appelmoes"] },
-    { "word": "verantwoordelijkheid", "options": ["verantwoordelijkheid", "verantwoording", "broek"] },
-    { "word": "duurzaamheid", "options": ["duurzaamheid", "duurzaam", "snoep"] }
-  ]
-}
+"1": [
+  { "word": "appel", "options": ["appel", "amper", "stoel"] },
+  { "word": "huis", "options": ["huis", "muur", "fiets"] },
+  { "word": "stoel", "options": ["stoel", "bank", "vogel"] },
+  { "word": "kat", "options": ["kat", "rat", "tafel"] },
+  { "word": "boek", "options": ["boek", "doek", "raam"] },
+  { "word": "fiets", "options": ["fiets", "vies", "broek"] },
+  { "word": "tafel", "options": ["tafel", "vaas", "jas"] },
+  { "word": "deur", "options": ["deur", "muur", "klok"] },
+  { "word": "boom", "options": ["boom", "zoon", "kop"] },
+  { "word": "water", "options": ["water", "boter", "mes"] }
+]
+"2": [
+  { "word": "bibliotheek", "options": ["bibliotheek", "boekhandel", "paraplu"] },
+  { "word": "ambtenaar", "options": ["ambtenaar", "minister", "strandstoel"] },
+  { "word": "vergadering", "options": ["vergadering", "bijeenkomst", "schoen"] },
+  { "word": "belasting", "options": ["belasting", "verzekering", "kopje"] },
+  { "word": "verzekering", "options": ["verzekering", "lening", "plafond"] },
+  { "word": "overeenkomst", "options": ["overeenkomst", "contract", "fietsbel"] },
+  { "word": "wetenschap", "options": ["wetenschap", "techniek", "vork"] },
+  { "word": "minister", "options": ["minister", "ambassadeur", "bloem"] },
+  { "word": "verantwoordelijkheid", "options": ["verantwoordelijkheid", "verplichting", "jas"] },
+  { "word": "duurzaamheid", "options": ["duurzaamheid", "milieu", "taart"] }
+]
